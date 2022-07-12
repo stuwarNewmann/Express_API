@@ -5,6 +5,7 @@ const app       = express();
 const port     = 3000;
 const IP       = '127.0.0.8';
 
+//Todos los endpoints que se tengan de forma especifica deben ir antes de los que se tengan de forma dinamica.
 app.get('/', (req, res) => {
   res.send('Hi, my server is running');
 });
