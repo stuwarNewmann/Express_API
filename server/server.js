@@ -1,4 +1,5 @@
 const express   = require('express');
+const faker    = require('faker');
 const app       = express();
 
 const port     = 3000;
@@ -11,35 +12,6 @@ app.get('/', (req, res) => {
 app.get('/new-rute', (req, res) => {
   res.send('Hi, New EndPoint');
 });
-
-app.get('/products', (req, res) => {
-  res.json({
-    products: [
-      {
-        name: 'Product 1',
-        price: '$100'
-      },
-      {
-        name: 'Product 2',
-        price: '$200'
-      },
-    ]
-  });
-});
-
-app.get('/products/:id', (req, res) => {
-  const {id}  = req.params;
-  res.json({
-    product: [
-      {
-        id,
-        name: 'Product 1',
-        price: '$100'
-      },
-    ]
-  });
-});
-
 app.get('/users', (req, res) => {
   const {limit, offset}  = req.query;
   if(limit && offset)
@@ -58,6 +30,35 @@ app.get('/users', (req, res) => {
     console.error('Error no hay parametros para: limit , offset');
   }
 
+});
+
+app.get('/products', (req, res) => {
+  const products = [];
+  const { size } = req.query;
+  const limit = size || 10;
+  for(let i = 0; i < limit; i++)
+  {
+    products.push({
+      id: i,
+      name: faker.commerce.productName(),
+      price: parseInt(faker.commerce.price()),
+      image: faker.image.imageUrl()
+    })
+  }
+  res.json(products);
+});
+
+app.get('/products/:id', (req, res) => {
+  const {id}  = req.params;
+  res.json({
+    product: [
+      {
+        id,
+        name: 'Product 1',
+        price: '$100'
+      },
+    ]
+  });
 });
 
 app.get('/categories/:categforyId/products/:productId', (req, res) => {
